@@ -56,8 +56,9 @@ docs/_build/
 # PyBuilder
 target/
 
-# Additional files.
-*sift.py   # Patent conflict.
-*.bak      # Backup files.
-*.DS_Store # Mac OS files.
+# Backup files.
+*.bak
+
+# Mac OS files.
+*.DS_Store 
 *._*
