@@ -58,12 +58,12 @@ def main():
         return
 
     # Otherwise, password was correct, so download the appropriate file.
-    filename = dept + '_students_pending.txt'
+    filename = dept.lower() + '_students_pending.txt'
     print '''
         <br>
         <H2>Download file:</H2>
         <p>
-        <a href='''+filename+'''>
+        <a href='''+filename+''' download>
         Click here to download the current list of '''+dept+'''
         students.</a></br>
         </p>
