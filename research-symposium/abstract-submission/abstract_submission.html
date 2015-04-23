@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html; charset=windows-1252" http-equiv="content-type">
+    <title>Davidson Abstract Submission</title>
+  </head>
+  <body>
+    <h1><span style="font-weight: bold;">Davidson College Math and Science
+        Research Symposium</span></h1>
+    <h3><span style="font-weight: bold;"></span></h3>
+    <h3><span style="font-weight: bold;">Submit your name, additional authors,
+        department and abstract to enter the research symposium.<br>
+      </span></h3>
+    <p><br>
+    </p>
+    <form method="post" action="abstract_submission.cgi" name="form1" id="form1">
+      <h2>------------ Students ---------------</h2>
+      <h4><span style="color: red;"></span></h4>
+      <h4><span style="color: red;">*Complete all of the following fields.</span></h4>
+      <p>First Author<span style="font-family: Lucida Grande;">:&nbsp; </span><input
+          required="required"
+          name="student_name"
+          type="text"></p>
+      <p>Additional authors (e.g. Faculty research advisor), separated by
+        semi-colons: <input required="required" name="advisor_name"
+          type="text"></p>
+      <p style="background-color: white;">Department:
+        <select required="required" name="department">
+          <option selected="selected" disabled="disabled" value="" hidden="">Select
+            a department.</option>
+          <option value="BIO">Biology</option>
+          <option value="CHE">Chemistry</option>
+          <option value="MAT">Mathematics and Computer Science</option>
+          <option value="PHY">Physics</option>
+        </select>
+      </p>
+      <p style="background-color: white; height: 5px;">Type or copy/paste your
+        abstract in the text box below.</p>
+      <p style="background-color: white; height: 5px;"><strong>Only submit your
+          abstract using <em>plaintext.</em></strong><em> </em>That is, do not
+        use any special formatting.</p>
+      <p style="background-color: white; margin-top: 7px; height: 5px;">You may
+        use LaTeX commands for equations, subscripts, superscripts, Greek
+        letters, etc. </p>
+      <p style="background-color: white;"><a target="_blank" href="gcat.davidson.edu/csc209/STC/latex_commands.html">Click
+          here</a> for a description of some useful LaTeX commands (link opens
+        in new tab).</p>
+      <textarea placeholder="Enter your abstract here using plaintext..." required="required"
+        rows="15"
+        cols="100"
+        name="abstract"></textarea><br>
+      <br>
+      <br>
+      Press 'Preview and Submit' to preview your abstract before submission: <input
+        value="Preview and Submit"
+        name="submit"
+        type="submit"><br>
+      <br>
+      ---------------------------------------------------------------<br>
+    </form>
+    ---------------------------------------------------------------<br>
+    <form method="post" action="generate_booklet.cgi" name="form2" id="form2">
+      <h2>------------ Faculty ----------------</h2>
+      <span style="color: red;"></span>
+      <h4><span style="color: red;">*Enter the correct password to generate the
+          Math and Science Research Symposium Booklet.</span></h4>
+      <p>Password: <input required="required" name="password" type="password">
+      </p>
+      <p>Press 'Download' to download the current booklet:<input value="Download"
+          name="submit"
+          type="submit">
+      </p>
+    </form>
+  </body>
+</html>
