@@ -134,7 +134,7 @@ def combine_authors(first, second):
     elif len(second) == 1:
         return first+' and '+second[0]
     else:
-        s = first + ', ' + ','.join(second[:-1])
+        s = first + ', ' + ', '.join(second[:-1])
         s = s + ', and ' + second[-1]
         return s
 
