@@ -68,7 +68,89 @@ def main():
     # Write the metadata file to the directory.
     metadata_filepath = dirname + '/' + filename + '_metadata.txt'
     write_metadata(metadata_filepath, dept, author1, author2, title)
+    
+    # Convert the rtf file to a LaTeX file.
+    tex_filepath = convert_rtf_to_tex(filepath)
 
+    # Add title and author information to the LaTeX file.
+    #add_title_and_author(tex_filepath, title, author1, author2)
+
+    # Generate pdf from the LaTeX file using pdflatex subprocess.
+    #subprocess.check_call(['pdflatex', tex_filepath])
+    # Remove auxiliary files from pdflatex compilation.
+
+def add_title_and_author(path, title, author1, author2): 
+    '''
+    Add the title and author information to the specified tex file.
+    params:
+      path: The relative path to the tex file.
+      title: The title of the abstract, which may contain LaTeX markup.
+      author1: The primary author.
+      author2: Zero, one, or more secondary authors, separated by semicolons.
+    '''
+    # Get string of authors.
+    authors = combine_authors(author1, author2)
+
+    # Store a list of lines to overwrite existing lines in the file.
+    output = []
+
+    # Open file for reading.
+    # Insert title and author immediately following ``\begin{document}'' line.
+    with open(path, 'r') as f:
+        for line in f:
+            output.append(line)
+            # Take every line except the LaTeX ``\newpage'' command.
+            if line.strip == '\\newpage':
+                output.append(line)
+            # Check for ``\begin{document}''.
+            if line.strip() == '\\begin{document}':
+                output.append('\n')
+                output.append('\\begin{center}\n')
+                output.append('\\textbf{' + title + '}\n')
+                output.append('\n')
+                output.append('\\vspace{0.3cm}\n')
+                output.append('\n')
+                output.append(authors + '\n')
+                output.append('\\end{center}\n')
+                output.append('\n')
+
+    # Now open the file for writing to overwrite the original.
+    with open(path, 'w') as f:
+        f.writelines(output)
+
+    # Make sure file permissions are as desired.
+    os.chmod(path, 0666)
+
+def combine_authors(first, second):
+    '''
+    Return a string containing the authors in format
+    "Author 1, Author 2, ..., and Author n".
+    params:
+      first: The name of the first author.
+      second: Zero, one, or more secondary authors, separated by semicolons.
+    '''
+    # Remove whitespace or newlines at ends of string.
+    first = first.strip()
+
+    # Get a list of second authors.
+    second_lst = [s.strip() for s in second.split(';')]
+    second_lst = filter(None, second_lst)  # Remove empty strings. 
+
+    # Combine the list of authors and return the result.
+    if len(second_lst) == 0:  # If no second authors.
+        return first
+    elif len(second_lst) == 1:
+        return (first + ' and ' + second_lst[0])
+    else:
+        s = first + ', ' + ', '.join(second_lst[:-1])
+        s = s + ', and ' + second[-1]
+        return s
+
+def convert_rtf_to_tex(filepath):
+    '''
+    Convert the specified rtf file to a LaTeX file using rtf2latex2e.
+    Return the path to the newly created tex file.
+    '''
     # Run rtf2latex2e to convert the new rtf file to a LaTeX file.
     rtf2latex2e = '/DATA/Documents/csc209/STC/bin/rtf2latex2e'
     params = '-n'  # Natural mode.
@@ -77,6 +159,8 @@ def main():
     # Change file permissions.
     tex_filepath = filepath[:-4] + '.tex'  # Remove '.rtf' from end.
     os.chmod(tex_filepath, 0666)
+
+    return tex_filepath
     
 def write_metadata(filepath, dept, author1, author2, title):
     '''
