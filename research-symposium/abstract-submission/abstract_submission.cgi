@@ -20,6 +20,7 @@ cgitb.enable()
 
 import os
 import sys
+import subprocess
 
 def main():
 
@@ -38,13 +39,14 @@ def main():
     # Obtain data from the html form, indexed like a dictionary.
     form = cgi.FieldStorage()  # Get dictionary from form.
     dept = form['department'].value
+    dept = dept.lower()  # Get lowercase.
     author1 = form['first_author'].value
     author2 = form['second_author'].value
     title = form['title'].value
 
     # Get the uploaded file and generate filename.
     # Split first author name on whitespace and re-concatenate.
-    author_compressed = ''.join(author1.split())
+    author_compressed = '_'.join(author1.split()).lower()
 
     # Sort into directory based on the department.
     dirname = dept + '/' + author_compressed
@@ -66,6 +68,15 @@ def main():
     # Write the metadata file to the directory.
     metadata_filepath = dirname + '/' + filename + '_metadata.txt'
     write_metadata(metadata_filepath, dept, author1, author2, title)
+
+    # Run rtf2latex2e to convert the new rtf file to a LaTeX file.
+    rtf2latex2e = '/DATA/Documents/csc209/STC/bin/rtf2latex2e'
+    params = '-n'  # Natural mode.
+    subprocess.check_call([rtf2latex2e, params, filepath])
+
+    # Change file permissions.
+    tex_filepath = filepath[:-4] + '.tex'  # Remove '.rtf' from end.
+    os.chmod(tex_filepath, 0666)
     
 def write_metadata(filepath, dept, author1, author2, title):
     '''
@@ -91,6 +102,7 @@ def make_directory(name):
     If so, create a new name.
     Make a directory with this name and return the directory name.
     '''
+    name = name.lower() # Make lowercase.
     size = len(name)  # Length of original name.
     counter = 1 # Number of directories with this name, including this one.
 
