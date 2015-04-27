@@ -73,7 +73,7 @@ def main():
     tex_filepath = convert_rtf_to_tex(filepath)
 
     # Add title and author information to the LaTeX file.
-    #add_title_and_author(tex_filepath, title, author1, author2)
+    add_title_and_author(tex_filepath, title, author1, author2)
 
     # Generate pdf from the LaTeX file using pdflatex subprocess.
     #subprocess.check_call(['pdflatex', tex_filepath])
