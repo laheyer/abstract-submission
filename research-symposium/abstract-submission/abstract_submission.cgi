@@ -143,7 +143,7 @@ def combine_authors(first, second):
         return (first + ' and ' + second_lst[0])
     else:
         s = first + ', ' + ', '.join(second_lst[:-1])
-        s = s + ', and ' + second[-1]
+        s = s + ', and ' + second_lst[-1]
         return s
 
 def convert_rtf_to_tex(filepath):
