@@ -1,2 +1,71 @@
-<!DOCTYPE html><html>  <head>    <meta content="text/html; charset=windows-1252" http-equiv="content-type">    <title>Davidson Abstract Submission</title>  </head>  <body>    <h1><span style="font-weight: bold;">Davidson College Math and Science        Research Symposium</span></h1>    <h3><span style="font-weight: bold;"></span></h3>    <h3><span style="font-weight: bold;">Submit your name, additional authors,        department and abstract to enter the research symposium.<br>      </span></h3>    <p><br>    </p>    <form method="post" action="abstract_submission.cgi" name="form1" id="form1"      enctype="multipart/form-data">      <h2>------------ Students ---------------</h2>      <h4><span style="color: red;"></span></h4>      <h4><span style="color: red;">*Complete all of the following fields.</span></h4>      <p>First Author<span style="font-family: Lucida Grande;">:&nbsp; </span><input          required="required"          name="first_author"          type="text"></p>      <p>Additional authors (e.g. Faculty research advisor), separated by        semi-colons: <input required="required" name="second_author" type="text"></p>      <p style="background-color: white;">Department:        <select required="required" name="department">          <option selected="selected" disabled="disabled" value="" hidden="">Select
-            a department.</option>          <option value="BIO">Biology</option>          <option value="CHE">Chemistry</option>          <option value="MAT">Mathematics and Computer Science</option>          <option value="PHY">Physics</option>        </select>      </p>      <p style="background-color: white;">Project Title: <input size="70" name="title"          type="text"></p>      <p style="background-color: white;">Upload Abstract as a <strong>.rtf          file</strong>. <span style="text-decoration: underline;">Do NOT          include the title and authors in your .rtf file</span>. Include only        the abstract text:</p>      <input required="required" value="Upload Abstract Body" name="abstract_file"        type="file"><br>      <br>      Press 'Preview and Submit' to preview your abstract before submission: <input        value="Preview and Submit"        name="submit"        type="submit"><br>      <br>      ---------------------------------------------------------------<br>    </form>    ---------------------------------------------------------------<br>    <form method="post" action="generate_booklet.cgi" name="form2" id="form2">      <h2>------------ Faculty ----------------</h2>      <span style="color: red;"></span>      <h4><span style="color: red;">*Enter the correct password to generate the          Math and Science Research Symposium Booklet.</span></h4>      <p>Password: <input required="required" name="password" type="password">      </p>      <p>Press 'Download' to download the current booklet:<input value="Download"          name="submit"          type="submit">      </p>    </form>  </body></html>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html; charset=windows-1252" http-equiv="content-type">
+    <title>Davidson Abstract Submission</title>
+  </head>
+  <body>
+    <h1><span style="font-weight: bold;">Davidson College Math and Science
+        Research Symposium</span></h1>
+    <h3><span style="font-weight: bold;"></span></h3>
+    <h3><span style="font-weight: bold;">Submit your name, additional authors,
+        department and abstract to enter the research symposium.<br>
+      </span></h3>
+    <p><br>
+    </p>
+    <form method="post" action="abstract_submission.cgi" name="form1" id="form1"
+      enctype="multipart/form-data">
+      <h2>------------ Students ---------------</h2>
+      <h4><span style="color: red;"></span></h4>
+      <h4><span style="color: red;">*Complete all of the following fields.</span></h4>
+      <p>First Author<span style="font-family: Lucida Grande;">:&nbsp; </span><input
+          required="required"
+          name="first_author"
+          type="text"></p>
+      <p>Additional authors (e.g. Faculty research advisor), separated by
+        semi-colons: <input name="second_author" type="text"></p>
+      <p style="background-color: white;">Department:
+        <select required="required" name="department">
+          <option selected="selected" disabled="disabled" value="" hidden="">Select
+            a department.</option>
+          <option value="BIO">Biology</option>
+          <option value="CHE">Chemistry</option>
+          <option value="ENV">Environmental Studies</option>
+          <option value="MAT">Mathematics and Computer Science</option>
+          <option value="PHY">Physics</option>
+          <option value="PSY">Psychology</option>
+        </select>
+      </p>
+      <p style="background-color: white;">Project Title: <input required="required"
+          size="70"
+          name="title"
+          type="text"></p>
+      <p style="background-color: white;">Upload Abstract as a <strong>.rtf
+          file</strong>. <span style="text-decoration: underline;">Do NOT
+          include the title and authors in your .rtf file</span>. Include only
+        the abstract text:</p>
+      <input required="required" value="Upload Abstract Body" name="abstract_file"
+        type="file"><br>
+      <br>
+      Press 'Preview and Submit' to preview your abstract before submission: <input
+        value="Preview and Submit"
+        name="submit"
+        type="submit"><br>
+      <br>
+      ---------------------------------------------------------------<br>
+    </form>
+    ---------------------------------------------------------------<br>
+    <form method="post" action="generate_booklet.cgi" name="form2" id="form2">
+      <h2>------------ Faculty ----------------</h2>
+      <span style="color: red;"></span>
+      <h4><span style="color: red;">*Enter the correct password to generate the
+          Math and Science Research Symposium Booklet.</span></h4>
+      <p>Password: <input required="required" name="password" type="password">
+      </p>
+      <p>Press 'Download' to download the current booklet:<input value="Download"
+          name="submit"
+          type="submit">
+      </p>
+    </form>
+  </body>
+</html>
