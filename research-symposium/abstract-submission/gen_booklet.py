@@ -40,28 +40,84 @@ def main():
     if not os.path.exists(parent):
         sys.exit('ERROR: Directory '+parent+' does not exist. Process aborted.')
 
-    # Dictionary of lists to store all data.
-    # A top-level dictionary of departments maps to lists
-    # containing data for each submission.
-    data = {
-            'MAT': [],
-            'PHY': [],
-            'BIO': [],
-            'CHE': []
-           }
+    # Create a list of lines, output, that will store all lines to be written to
+    # the final LaTeX file used to generate the booklet.
+    # Initialize the output first with the contents of the LaTeX preamble.
+    output = []
+    preamble = 'test-booklet/preamble.tex'
+    with open(preamble, 'r') as f:
+        output.append(f.readlines())
 
     # Walk through every file in parent directory and any subdirectories.
+    # !!!Important!!! Finding the department name in this loop relies heavily on
+    # the specific file structure created during the abstract submission
+    # process. For example, Sam Castle's math abstract will be located in 
+    # /some_path/mat/castle_sam/castle_sam_abstract.tex
     for root, dirs, files in os.walk(parent, topdown=False):
+        currdept = ''  # The current department being processed.
         for f in files:
-            if f[-3:] == 'txt':  # Only process text files.
+            if f[-3:] == 'tex':  # Only process tex files.
+                print 'Orig path:',
+                print f
                 f = os.path.join(root, f)    # Full path.
-                get_data_from_file(f, data)  # Add data from current file.
+                # This is the crucial step to get dept code based on arbitrary
+                # but specified directory structure.
+                deptcode = root.split('/')[-2].lower()
+                if deptcode != currdept:  # Changed to next department.
+                    # End previous department.
+
+                    # Start next dept.
+                    output.append(get_dept_header(deptcode))
+                    currdept = deptcode
+                #get_data_from_file(f, data)  # Add data from current file.
                 #print f
+                print 'Full path:',
+                print f
+                print 'root:',
+                print root
+                print 'dirs:',
+                print dirs
+                print
+                print '------'
+                print
     
     # Finished extracting data from files.
     # Sort data within each department.
-    custom_sort(data)
+    #custom_sort(data)
     #print data
+
+def get_dept_header(code):
+    '''
+    Given the three-letter department code, return the LaTeX code as a string
+    that will write the department name as a section header and set up the new
+    department's section in the master LaTeX document.
+    '''
+    # Map the department codes used in directory names to their full names.
+    dept = {
+            'bio': 'Biology',
+            'che': 'Chemistry',
+            'env': 'Environmental Studies',
+            'mat': 'Mathematics and Computer Science',
+            'phy': 'Physics',
+            'psy': 'Psychology'
+           }
+
+    # Get department name, and make sure department code is valid.
+    try:
+        deptname = dept[code]
+    except KeyError e:
+        print 'Error: Incorrect department code or incorrect file structure.',
+        print 'Files should be in a directory as follows:'
+        print '/some_path/mat/castle_sam/castle_sam_abstract.tex'
+        print 'for Sam Castle\'s abstract in the Math department.'
+        print "Key error({0}): {1}".format(e.errno, e.strerror)
+
+    # Return the LaTeX code to write the section header for the new department.
+    return ('''
+    %---- new dept
+    %\\begin{department}  % ''' + deptname + '''
+    ''')
+   
 
 def custom_sort(data):
     '''Sorts the dataset within each department, using alphabetical
