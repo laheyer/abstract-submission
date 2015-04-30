@@ -44,9 +44,12 @@ def main():
     author2 = form['second_author'].value
     title = form['title'].value
 
-    # Get the uploaded file and generate filename.
-    # Split first author name on whitespace and re-concatenate.
-    author_compressed = '_'.join(author1.split()).lower()
+    # Generate filename from the name of the first author.
+    # Make first author lowercase, remove '.', split on whitespace,
+    # move the last name to front, and re-concatenate with underscores.
+    author_compressed = author1.lower().replace('.','').split()
+    author_compressed.insert(0, author_compressed.pop())
+    author_compressed = '_'.join(author_compressed)
 
     # Sort into directory based on the department.
     dirname = dept + '/' + author_compressed
@@ -99,37 +102,40 @@ def add_title_and_author(path, title, author1, author2):
     with open(path, 'r') as f:
         wait_abstract = False  # True if the abstract is the next text.
         for line in f:
-            # Start by recording each line.
-            output.append(line)
+            # Start by recording each line unless waiting through blank lines
+            # for the abstract.
+            if not wait_abstract:
+                output.append(line)
             # Take every line except the LaTeX ``\newpage'' command.
             if line.strip() == '\\newpage':
                 output.pop()
             # Check for ``\begin{document}''. Add title and author here.
             if line.strip() == '\\begin{document}':
                 output.append('\n')
-                output.append('\\noindent\n')
-                output.append('%\\begin{title}\n')
-                output.append('\\textbf{' + title + '}\n')
-                output.append('%\\end{title}\n')
+                output.append('\\begin{customtitle}\n')
+                output.append(title + '\n')
+                output.append('\\end{customtitle}\n')
                 output.append('\n')
-                output.append('\\noindent\n')
-                output.append('%\\begin{author}\n')
-                output.append('\\textbf{' + authors + '}\n')
-                output.append('%\\end{author}\n')
+                output.append('\\begin{customauthor}\n')
+                output.append(authors + '\n')
+                output.append('\\end{customauthor}\n')
                 output.append('\n')
                 wait_abstract = True  # Now waiting for the abstract text.
                 continue              # Continue to next line in file.
             # Check for the first line with text when waiting for the abstract.
-            if wait_abstract and line.strip() != '\n':
-                output.pop()
-                output.append('\\noindent\n')
-                output.append('%\\begin{abstract}\n')
+            # This, of course, will be the start of the abstract.
+            if wait_abstract and line.strip() != '':
+                output.append('\\begin{customabstract}\n')
+                output.append(line)
                 wait_abstract = False
             # Check for ``\end{document}'' to signify the end of the abstract.
             if line.strip() == '\\end{document}':
-                # Take out the line, insert desired text, put line back in.
-                output.pop()
-                output.append('%\\end{abstract}\n')
+                output.pop()  # Remove the ``\end{document}'' line temporarily.
+                # Remove excess blank lines.
+                while output[-1] == '\n':
+                    output.pop()
+                # Signal end of abstract and replace ``\end{document}''
+                output.append('\\end{customabstract}\n')
                 output.append('\n')
                 output.append(line)
 
