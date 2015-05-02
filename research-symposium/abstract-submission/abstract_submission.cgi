@@ -102,15 +102,16 @@ def add_title_and_author(path, title, author1, author2):
     with open(path, 'r') as f:
         wait_abstract = False  # True if the abstract is the next text.
         for line in f:
+            line_stripped = line.strip()
             # Start by recording each line unless waiting through blank lines
             # for the abstract.
             if not wait_abstract:
                 output.append(line)
             # Take every line except the LaTeX ``\newpage'' command.
-            if line.strip() == '\\newpage':
+            if line_strip == '\\newpage':
                 output.pop()
             # Check for ``\begin{document}''. Add title and author here.
-            if line.strip() == '\\begin{document}':
+            if line_strip == '\\begin{document}':
                 output.append('\n')
                 output.append('\\begin{customtitle}\n')
                 output.append(title + '\n')
@@ -124,12 +125,12 @@ def add_title_and_author(path, title, author1, author2):
                 continue              # Continue to next line in file.
             # Check for the first line with text when waiting for the abstract.
             # This, of course, will be the start of the abstract.
-            if wait_abstract and line.strip() != '':
+            if wait_abstract and line_strip != '':
                 output.append('\\begin{customabstract}\n')
                 output.append(line)
                 wait_abstract = False
             # Check for ``\end{document}'' to signify the end of the abstract.
-            if line.strip() == '\\end{document}':
+            if line_strip == '\\end{document}':
                 output.pop()  # Remove the ``\end{document}'' line temporarily.
                 # Remove excess blank lines.
                 while output[-1] == '\n':
@@ -138,6 +139,10 @@ def add_title_and_author(path, title, author1, author2):
                 output.append('\\end{customabstract}\n')
                 output.append('\n')
                 output.append(line)
+
+            # Remove additional unnecessary and unwanted formatting.
+            if line_strip == '\\begin{center}' or line_strip == '\\end{center}':
+                output.pop()
 
     # Now open the file for writing to overwrite the original.
     with open(path, 'w') as f:
