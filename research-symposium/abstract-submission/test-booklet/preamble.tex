@@ -1,0 +1,111 @@
+%&pdfLaTeX
+% !TEX encoding = UTF-8 Unicode
+\documentclass{article}
+\usepackage{ifxetex}
+\ifxetex
+\usepackage{fontspec}
+\setmainfont[Mapping=tex-text]{STIXGeneral}
+\else
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\fi
+\usepackage{textcomp}
+
+\usepackage{amssymb}
+\usepackage{fancyhdr}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\usepackage{geometry}
+\geometry{margin=.75in}
+%\geometry{lmargin=1in}
+
+\usepackage{fixltx2e}  % For \textsubscript{} command.
+
+% For dots in table of contents.
+\usepackage{tocloft}
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+
+%\usepackage{titlecaps}
+%\Addlcwords{the and a in as well of}
+
+\usepackage{environ}
+
+% Command to use titlecaps and bold.
+%\newcommand{\boldtitlecap}[1]{\textbf{\titlecap{#1}}}
+
+\usepackage{sectsty}  % Used to control font syling of section headings.
+% Center headings and no hanging indent.
+% Also make all upper case by reversing the MakeLowercase macro.
+\allsectionsfont{\nohang\centering\scshape\MakeLowercase}
+
+% Custom department section heading environ.
+\NewEnviron{departmentheading}{%
+	\pagebreak
+	\addcontentsline{toc}{section}{\BODY}
+	\section*{\BODY}
+	\vspace{0.3cm}
+	}
+
+% Custom environment to format th title, author, and abstract for a single
+% student's submission as a single unit.
+% Primarily, this is to handle each title, author line, and abstract together
+% and prevent page breaking within this unit.
+% Use the samepage environment, a \parbox, a minipage, or the \needspace
+% command to prevent page breaks within this unit.
+\NewEnviron{titleauthorabstract}{%
+	%\begin{minipage}{\textwidth}
+	\filbreak
+	\begin{samepage}
+	\BODY
+	\end{samepage}
+	\vspace{0.7cm}
+	}
+
+
+% Custom title environ.
+\NewEnviron{customtitle}{%
+	%\titlecap{\textbf{\BODY}}%
+	%\vspace{0.9cm}
+	\textbf{\BODY} 
+	}
+
+% Custom author environ.
+\NewEnviron{customauthor}{%
+	%\boldtitlecap{\BODY}%
+	\textbf{\BODY}
+	}
+
+% Custom abstract environ.
+\NewEnviron{customabstract}{%
+	\vspace{0.3cm}
+	\BODY
+	}
+
+
+\begin{document}
+\raggedright{}
+
+\begin{center}
+{\huge\bfseries Davidson College}
+
+%\the\year
+
+{\huge\bfseries \the\year  \\ Science and Math Student Research Symposium}
+
+May 09, 2015
+
+Davidson College
+\end{center}
+
+\tableofcontents
+
+\subsection*{Acknowledgment}
+The Vice President for Academic Affairs Office generously provided
+funds to support this important event.
+
+% Suppress page numbers on the intro page.
+% Also make the following page begin with page number 1.
+\thispagestyle{empty}
+\clearpage
+\setcounter{page}{1}
