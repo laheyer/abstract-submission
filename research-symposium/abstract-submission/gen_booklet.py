@@ -1,9 +1,9 @@
 #!/usr/bin/python
 
 '''
-gen_booklet.py
+write_latex_booklet.py
 
-usage: python gen_booklet.py <path-to-parent-directory>
+usage: python write_latex_booklet.py <path-to-parent-directory>
 
 This script was created for the Davidson College Math and Science Research
 Symposium.
@@ -16,9 +16,9 @@ Created: 20 Apr 2015
 '''
 
 # Imports for html cgi docs.
-import cgi
-import cgitb
-cgitb.enable()
+#import cgi
+#import cgitb
+#cgitb.enable()
 
 import os
 import sys
@@ -56,35 +56,38 @@ def main():
     for root, dirs, files in os.walk(parent, topdown=False):
         currdept = ''  # The current department being processed.
         for f in files:
-            if f[-3:] == 'tex':  # Only process tex files.
-                print 'Orig path:',
-                print f
-                f = os.path.join(root, f)    # Full path.
-                # This is the crucial step to get dept code based on arbitrary
-                # but specified directory structure.
-                deptcode = root.split('/')[-2].lower()
-                if deptcode != currdept:  # Changed to next department.
-                    # End previous department.
+            # Move on to the next file if current is not an abstract file.
+            if f[-13:] != '_abstract.tex':
+                continue
+            f = os.path.join(root, f)    # Full path.
 
-                    # Start next dept.
-                    output.append(get_dept_header(deptcode))
-                    currdept = deptcode
-                #get_data_from_file(f, data)  # Add data from current file.
-                #print f
-                print 'Full path:',
-                print f
-                print 'root:',
-                print root
-                print 'dirs:',
-                print dirs
-                print
-                print '------'
-                print
+            # This is the crucial step to get dept code based on arbitrary
+            # but specified directory structure.
+            deptcode = root.split('/')[-2].lower()
+            if deptcode != currdept:  # Changed to next department.
+                # Start next dept.
+                output.append(get_dept_header(deptcode))
+                currdept = deptcode
+
+            # Now, get the abstract text from this file.
+            output.append(get_text_from_file(f))
     
     # Finished extracting data from files.
-    # Sort data within each department.
-    #custom_sort(data)
-    #print data
+    # Write the output to the new file.
+    with open (output_file, 'w'):
+        output_file.writelines(output)
+
+def get_text_from_file(path):
+    '''
+    Return a list of lines which are the desired text from the given file.
+    This will collect the title, author, and abstract text from the abstract
+    file. That is, everything between the LaTeX commands ``\begin{document}''
+    and ``\end{document}''
+    '''
+    # Save the text as a list of lines.
+    text = []
+    # Open the file and store every line with the LaTeX document environment.
+    with open(path, 'r') as f:
 
 def get_dept_header(code):
     '''
@@ -105,94 +108,21 @@ def get_dept_header(code):
     # Get department name, and make sure department code is valid.
     try:
         deptname = dept[code]
-    except KeyError e:
+    except KeyError as e:
         print 'Error: Incorrect department code or incorrect file structure.',
         print 'Files should be in a directory as follows:'
         print '/some_path/mat/castle_sam/castle_sam_abstract.tex'
         print 'for Sam Castle\'s abstract in the Math department.'
-        print "Key error({0}): {1}".format(e.errno, e.strerror)
 
     # Return the LaTeX code to write the section header for the new department.
     return ('''
-    %---- new dept
-    %\\begin{department}  % ''' + deptname + '''
+    % ------------------------- New department. -------------------------\n
+    \\begin{departmentheading}\n''' +
+    deptname +
+    '''
+    \end{departmentheading}\n
+    % -------------------------------------------------------------------\n
     ''')
-   
-
-def custom_sort(data):
-    '''Sorts the dataset within each department, using alphabetical
-    order based on the author list.
-    Takes as a parameter the dataset to be sorted.
-    ''' 
-    # Loop through each department in the data dictionary.
-    for dept in data.keys():
-        # data[dept] is a list of 3-tuples.
-        # Sort by the first element (author) in the 3-tuple.
-        data[dept] = sorted(data[dept], key=lambda x: x[0])
-
-def get_data_from_file(filename, data):
-    '''Get the necessary data from the file and add it to the data set.
-    The input file should have the following format:
-    "
-    department
-    title
-    primary author
-    secondary authors, separated by semicolons
-    abstract text
-    "
-
-    If file's first line is not a valid department code or the file
-    does not contain at least 5 lines, an exception is thrown, an error
-    message is printed to stdout, and no change is made to the dataset.
-
-    Takes the following parameters:
-    filename: the absolute path to the file containing data.
-    data: the dataset to update.
-    '''
-    try:
-        #print 'Opening '+filename
-        # Open the file.
-        with open(filename, 'r') as f:
-            lines = f.readlines()
-            # First, extract header data from file.
-            dept = lines[0].strip() # Grab the next line and strip newline.
-            # Skip this file if first line is not an expected department code.
-            if dept not in data.keys():
-                return
-            title = lines[1].strip()
-            author = lines[2].strip()
-            # Get list of possible second authors.
-            second_author = [s.strip() for s in lines[3].split(';')]
-            second_author = filter(None, second_author)  # Remove empty strings.
-            text = lines[4:]
-    except IOError as e:
-        print "I/O error({0}): {1}".format(e.errno, e.strerror)
-        print 'Error reading '+filename
-    except:
-        print "Unexpected error:", sys.exc_info()[0]
-        print 'Error reading'+filename
-
-    # Now store the data from this file as a 3-tuple
-    # of (author, title, text).
-    comb_author = combine_authors(author, second_author)
-    data[dept].append((comb_author, title, text))
-
-def combine_authors(first, second):
-    '''Return a string containing the authors in format
-    "Author 1, Author 2, ..., and Author n".
-    Takes the following parameters:
-    first: the name of the first author.
-    second: a list of all remaining authors. May be size 0 to n-1,
-            for n authors.
-    '''
-    if len(second) == 0:  # If no second authors.
-        return first
-    elif len(second) == 1:
-        return first+' and '+second[0]
-    else:
-        s = first + ', ' + ', '.join(second[:-1])
-        s = s + ', and ' + second[-1]
-        return s
 
 if __name__ == '__main__':
     main()
