@@ -25,8 +25,8 @@ import sys
 
 def write_booklet():
 
-    output_file = 'test-booklet/master_output.tex'
-    preamble_file = 'test-booklet/preamble.tex'
+    output_file = 'master_output.tex'
+    preamble_file = 'preamble.tex'
 
     # Get path to parent directory for files.
     if len(sys.argv) > 1: # If user specified directory as argument.
@@ -63,7 +63,8 @@ def write_booklet():
     for root, dirs, files in os.walk(parent, topdown=False):
         for f in files:
             # Move on to the next file if current is not an abstract file.
-            if f[-13:] != '_abstract.tex':
+            # First character '.' represents a hidden file.
+            if f[0] == '.' or f[-13:] != '_abstract.tex':
                 continue
             f = os.path.join(root, f)    # Full path.
 
