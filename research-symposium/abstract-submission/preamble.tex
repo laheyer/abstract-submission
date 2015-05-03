@@ -16,9 +16,10 @@
 \renewcommand{\headrulewidth}{0pt}
 \renewcommand{\footrulewidth}{0pt}
 
+% Choose page margins.
 \usepackage{geometry}
 \geometry{margin=.75in}
-%\geometry{lmargin=1in}
+%\geometry{lmargin=1in}  % Change left margin.
 
 \usepackage{fixltx2e}  % For \textsubscript{} command.
 
@@ -26,6 +27,7 @@
 \usepackage{tocloft}
 \renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
 
+% Package for capitalization of titles.
 %\usepackage{titlecaps}
 %\Addlcwords{the and a in as well of}
 
@@ -62,17 +64,14 @@
 	\vspace{0.7cm}
 	}
 
-
 % Custom title environ.
 \NewEnviron{customtitle}{%
-	%\titlecap{\textbf{\BODY}}%
-	%\vspace{0.9cm}
+	%\titlecap{\textbf{\BODY}} % For capitalizing titles.
 	\textbf{\BODY} 
 	}
 
 % Custom author environ.
 \NewEnviron{customauthor}{%
-	%\boldtitlecap{\BODY}%
 	\textbf{\BODY}
 	}
 
@@ -82,27 +81,15 @@
 	\BODY
 	}
 
-
+%----------------------------------------------------------------------------------------
+%	MAIN DOCUMENT
+%----------------------------------------------------------------------------------------
 \begin{document}
 \raggedright{}
 
-\begin{center}
-{\huge\bfseries Davidson College}
-
-%\the\year
-
-{\huge\bfseries \the\year  \\ Science and Math Student Research Symposium}
-
-May 09, 2015
-
-Davidson College
-\end{center}
-
-\tableofcontents
-
-\subsection*{Acknowledgment}
-The Vice President for Academic Affairs Office generously provided
-funds to support this important event.
+% Input the title page, from customtitle.tex.
+% Note: customtitle.tex must be located in the working directory.
+\input{customtitle}
 
 % Suppress page numbers on the intro page.
 % Also make the following page begin with page number 1.
