@@ -63,3 +63,6 @@ target/
 .DS_Store 
 **/.DS_Store
 *._*
+
+# Data folder.
+*all_abstracts/*
