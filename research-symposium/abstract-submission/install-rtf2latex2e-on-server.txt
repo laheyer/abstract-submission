@@ -1,0 +1,20 @@
+Copy tar file to server in user's home directory.
+scp rtf2latex2e-2-2-2.tar.gz server.address.edu:
+
+Log in to server and make /bin and /share directories.
+ssh username@server.address.edu
+mkdir /path_to_folder_with_html_files/bin
+mkdir /path_to_folder_with_html_files/share
+
+From server home directory, untar rtf2latex2e-2-2-2.tar.gz
+tar -zxvf rtf2latex2e-2-2-2.tar.gz
+
+Navigate into rtf2latex2e-2-2-2 directory.
+cd /path_to_folder_with_html_files/rtf2latex2e-2-2-2/
+
+Install rtf2latex2e using the Makefile. Use home folder,
+where /bin and /share were made.
+make install prefix=/path_to_folder_with_html_files/rtf2latex2e-2-2-2/
+
+Run as follows.
+/path_to_folder_with_html_files -n <rtf_filepath>
