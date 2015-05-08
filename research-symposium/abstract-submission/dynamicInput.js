@@ -15,12 +15,13 @@ var limit = 3;
 // Main function.
 function addInput(divName){
     if (counter == limit)  {
-        alert("You have reached the limit of adding " + counter + " inputs");
+        alert("You have reached the limit of adding " + (counter+1) +
+                " authors.");
     }
     else {
         var newdiv = document.createElement('div');
         newdiv.innerHTML = "Author " + (counter + 2) +
-                        " <br><input type='text' name='myInputs[]'>";
+                        " <br><input type='text' name='second_authors'>";
         document.getElementById(divName).appendChild(newdiv);
         counter++;
     }

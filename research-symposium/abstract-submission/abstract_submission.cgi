@@ -41,7 +41,10 @@ def main():
     dept = form['department'].value
     dept = dept.lower()  # Get lowercase.
     author1 = form['first_author'].value
-    author2 = form['second_author'].value
+    #author2 = form['second_authors'].value
+    author2 = form.getlist('second_authors') # List of additional authors.
+    print author2
+    #author2 = [s.strip() for s in author2] # Strip unnecessary whitespace.
     title = form['title'].value
 
     # Generate filename from the name of the first author.
@@ -89,7 +92,7 @@ def add_title_and_author(path, title, author1, author2):
       path: The relative path to the tex file.
       title: The title of the abstract, which may contain LaTeX markup.
       author1: The primary author.
-      author2: Zero, one, or more secondary authors, separated by semicolons.
+      author2: List of zero, one, or more secondary authors.
     '''
     # Get string of authors.
     authors = combine_authors(author1, author2)
@@ -102,7 +105,7 @@ def add_title_and_author(path, title, author1, author2):
     with open(path, 'r') as f:
         wait_abstract = False  # True if the abstract is the next text.
         for line in f:
-            line_stripped = line.strip()
+            line_strip = line.strip()
             # Start by recording each line unless waiting through blank lines
             # for the abstract.
             if not wait_abstract:
@@ -157,23 +160,22 @@ def combine_authors(first, second):
     "Author 1, Author 2, ..., and Author n".
     params:
       first: The name of the first author.
-      second: Zero, one, or more secondary authors, separated by semicolons.
+      second: List of zero, one, or more secondary authors.
     '''
     # Remove whitespace or newlines at ends of string.
     first = first.strip()
 
     # Get a list of second authors.
-    second_lst = [s.strip() for s in second.split(';')]
-    second_lst = filter(None, second_lst)  # Remove empty strings. 
+    second = filter(None, second)  # Remove empty strings. 
 
     # Combine the list of authors and return the result.
-    if len(second_lst) == 0:  # If no second authors.
+    if len(second) == 0:  # If no second authors.
         return first
-    elif len(second_lst) == 1:
-        return (first + ' and ' + second_lst[0])
+    elif len(second) == 1:
+        return (first + ' and ' + second[0])
     else:
-        s = first + ', ' + ', '.join(second_lst[:-1])
-        s = s + ', and ' + second_lst[-1]
+        s = first + ', ' + ', '.join(second[:-1])
+        s = s + ', and ' + second[-1]
         return s
 
 def convert_rtf_to_tex(filepath):
@@ -205,7 +207,7 @@ def write_metadata(filepath, dept, author1, author2, title):
         f.write(dept+'\n')
         f.write(title+'\n')
         f.write(author1+'\n')
-        f.write(author2+'\n')
+        f.write(';'.join(author2)+'\n')
 
     # Change file permissions.
     os.chmod(filepath, 0664)
