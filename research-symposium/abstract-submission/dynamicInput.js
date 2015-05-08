@@ -11,7 +11,7 @@
 // Track the current number of fields added.
 var counter = 1;
 // Place a limit on the total number of fields allowed.
-var limit = 3;
+var limit = 9;
 // Main function.
 function addInput(divName){
     if (counter == limit)  {
