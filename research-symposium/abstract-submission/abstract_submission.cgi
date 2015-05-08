@@ -38,13 +38,12 @@ def main():
 
     # Obtain data from the html form, indexed like a dictionary.
     form = cgi.FieldStorage()  # Get dictionary from form.
+    year = form['year'].value
     dept = form['department'].value
     dept = dept.lower()  # Get lowercase.
     author1 = form['first_author'].value
-    #author2 = form['second_authors'].value
     author2 = form.getlist('second_authors') # List of additional authors.
-    print author2
-    #author2 = [s.strip() for s in author2] # Strip unnecessary whitespace.
+    author2 = [s.strip() for s in author2] # Strip unnecessary whitespace.
     title = form['title'].value
 
     # Generate filename from the name of the first author.
@@ -55,7 +54,7 @@ def main():
     author_compressed = '_'.join(author_compressed)
 
     # Sort into directory based on the department.
-    dirname = dept + '/' + author_compressed
+    dirname = year + '/' + dept + '/' + author_compressed
     # And check whether departmental directory exists.
     if not os.path.exists(dept):
         os.makedirs(dept)
