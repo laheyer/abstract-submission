@@ -1,0 +1,51 @@
+% Define the date of the event.
+
+% Use this document to insert a title page via the following command:
+% \input{customtitle}
+% As long as this file is located in the same directory as the working tex file.
+
+%----------------------------------------------------------------------------------------
+%	TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\begin{customtitle}
+	\begin{center} % Center all text
+		\vspace*{5\baselineskip} % White space at the top of the page
+
+		\rule{\textwidth}{1.6pt}\vspace*{-\baselineskip}\vspace*{2pt} % Thick horizontal line
+		\rule{\textwidth}{0.4pt}\\[\baselineskip] % Thin horizontal line
+
+		% The main title.
+		{\LARGE\bfseries Davidson College\\
+		[0.4\baselineskip]
+		Science \& Math Student Research Symposium}\\
+		[0.2\baselineskip]
+
+		\rule{\textwidth}{0.4pt}\vspace*{-\baselineskip}\vspace{3.2pt} % Thin horizontal line
+		\rule{\textwidth}{1.6pt}\\[\baselineskip] % Thick horizontal line
+
+		%\scshape % Small caps
+
+		% Skip space and insert the date, defined above.
+		\vspace{2\baselineskip}
+		{\LARGE \customdate}
+
+		\vspace*{2\baselineskip} % Whitespace between location/year and editors
+
+		% Change name of table of contents and insert table of contents.
+		\renewcommand{\contentsname}{\scshape Contents}
+		{\flushleft\Large \tableofcontents}
+
+		% Fill to bottom of page.
+		\vfill
+
+		% Insert Acknowledgment.
+		\subsection*{Acknowledgment}
+		% Flush left and remove bold.
+		\begin{flushleft}
+			\textnormal{The Vice President for Academic Affairs Office
+			generously provided funds to support this important event.}
+		\end{flushleft}
+
+	\end{center}
+\end{customtitle}
