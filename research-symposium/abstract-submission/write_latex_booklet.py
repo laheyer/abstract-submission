@@ -3,7 +3,19 @@
 '''
 write_latex_booklet.py
 
-usage: python write_latex_booklet.py <path-to-parent-directory>
+usage: Either import and call as function (1), run as main method with
+command-line args (2), or run as main method and input args (3).
+
+(1) 
+import write_latex_booklet
+write_latex_booklet(parent_directory, preamble_file_path, output_file_path)
+
+(2)
+python write_latex_booklet.py <path-to-parent-directory> <preamble_file_path>
+<output_file_path>
+
+(3)
+python write_latex_booklet.py
 
 This script was created for the Davidson College Math and Science Research
 Symposium.
@@ -23,22 +35,10 @@ Created: 20 Apr 2015
 import os
 import sys
 
-def write_booklet():
+def write_booklet(parent, preamble_file, output_file):
 
-    output_file = 'master_output.tex'
-    preamble_file = 'preamble.tex'
-
-    # Get path to parent directory for files.
-    if len(sys.argv) > 1: # If user specified directory as argument.
-        parent = sys.argv[1]
-    else:
-        sys.exit('usage: python gen_booklet.py <path-to-parent-directory>')
-        #print 'Enter the full or relative path to the parent'
-        #print 'directory for all abstract files:'
-        #parent = raw_input('> ')
-    parent = os.path.abspath(parent) # Convert to absolute path.
-
-    #print parent
+    # Convert parent directory path to absolute path.
+    parent = os.path.abspath(parent)
 
     # Abort if parent directory path does not exist.
     if not os.path.exists(parent):
@@ -47,9 +47,8 @@ def write_booklet():
     # Create a list of lines, output, that will store all lines to be written to
     # the final LaTeX file used to generate the booklet.
     # Initialize the output first with the contents of the LaTeX preamble.
-    output = []
     with open(preamble_file, 'r') as f:
-        output += f.readlines()
+        output = list(f)
     output.append('\n')
     output.append('% ----------------- End of preamble file -----------------\n')
     output.append('\n')
@@ -155,4 +154,26 @@ def get_dept_header(code):
     return text
 
 if __name__ == '__main__':
-    write_booklet()
+
+    # Get directory and file path information then write booklet.
+    try:
+        parent = sys.argv[1]
+        preamble = sys.argv[2]
+        output = sys.argv[3]
+    # Ask user for input of any which were not included.
+    except IndexError:
+        try:
+            parent
+        except NameError:
+            parent = raw_input('Input path to directory of desired abstracts: ')
+        try:
+            preamble
+        except NameError:
+            preamble = raw_input('Input path to preamble tex file: ')
+        try:
+            output
+        except NameError:
+            output = raw_input(
+                'Input path to final output file (overwrite existing file): ')
+        
+    write_booklet(dir_name, preamble_file, output_file)
