@@ -5,3 +5,4 @@ This project is the first PRONTO project, by Sam T. Castle (while he was a stude
 Contains code to submit abstracts to the Math and Science Research Symposium 
 Contains code to build the abstract booklet from the submitted abstracts
 
+Committing a change should show up on PRONTO Slack page
