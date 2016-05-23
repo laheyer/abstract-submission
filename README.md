@@ -1,4 +1,4 @@
-# Project PRONTO
+# Project PRONTO: Abstract Submission Tool
 
 This project is the first PRONTO project, by Sam T. Castle (while he was a student at Davidson College)
 
